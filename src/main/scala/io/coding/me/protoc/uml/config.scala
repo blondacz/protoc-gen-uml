@@ -3,7 +3,7 @@ package io.coding.me.protoc.uml
 import pureconfig.generic.auto._
 import pureconfig.ConfigReader.fromString
 import pureconfig.generic.ProductHint
-import pureconfig.{CamelCase, ConfigFieldMapping}
+import pureconfig.{CamelCase, ConfigFieldMapping, ConfigReader}
 
 package object config {
 
@@ -11,23 +11,23 @@ package object config {
   object OneOfRepresentation extends Enumeration {
 
     /** Creates a class with stereotype <oneOf> for each oneOf field */
-    val SEPARATE_TYPE = Value("SeparateType")
+    val SEPARATE_TYPE: OneOfRepresentation.Value = Value("SeparateType")
 
     /** Integrate fields of oneOf field into class */
-    val INTEGRATE_FIELD = Value("IntegrateField")
+    val INTEGRATE_FIELD: OneOfRepresentation.Value = Value("IntegrateField")
   }
 
   /** Configures the output format */
   object OutputFormat extends Enumeration {
 
-    val PLANT_UML = Value("PlantUML")
+    val PLANT_UML: OutputFormat.Value = Value("PlantUML")
   }
 
   /** Additional grouing inside output file */
   object OutputGrouping extends Enumeration {
 
-    val DEFAULT = Value("Default")
-    val BY_FILE = Value("ByFile")
+    val DEFAULT: OutputGrouping.Value = Value("Default")
+    val BY_FILE: OutputGrouping.Value = Value("ByFile")
   }
 
   /** Configures which types shall not be part of the output. */
@@ -37,13 +37,13 @@ package object config {
   object OutputFileOrganization extends Enumeration {
 
     /** Each input file corresponds to one output file */
-    val DIRECT_MAPPING = Value("DirectMapping")
+    val DIRECT_MAPPING: OutputFileOrganization.Value = Value("DirectMapping")
 
     /** Only one large file will be created */
-    val SINGLE_FILE = Value("SingleFile")
+    val SINGLE_FILE: OutputFileOrganization.Value = Value("SingleFile")
 
     /** Create one file per package */
-    val FILE_PER_PACKAGE = Value("FilePerPackage")
+    val FILE_PER_PACKAGE: OutputFileOrganization.Value = Value("FilePerPackage")
   }
 
   case class View(pakkage: Boolean, fields: Boolean, relations: Boolean)
@@ -54,12 +54,12 @@ package object config {
   case class Output(format: OutputFormat.Value, organization: OutputFileOrganization.Value, grouping: OutputGrouping.Value, file: String, filter: OutputFilter)
   case class Config(output: Output, uml: UML)
 
-  implicit val converterOutputFileOrganization = fromString[OutputFileOrganization.Value](s => Right(OutputFileOrganization.withName(s)))
-  implicit val converterOutputGrouping         = fromString[OutputGrouping.Value](s => Right(OutputGrouping.withName(s)))
-  implicit val converterOutputFormat           = fromString[OutputFormat.Value](s => Right(OutputFormat.withName(s)))
-  implicit val converterOneOfRepresentation    = fromString[OneOfRepresentation.Value](s => Right(OneOfRepresentation.withName(s)))
+  implicit val converterOutputFileOrganization: ConfigReader[OutputFileOrganization.Value] = fromString[OutputFileOrganization.Value](s => Right(OutputFileOrganization.withName(s)))
+  implicit val converterOutputGrouping: ConfigReader[OutputGrouping.Value] = fromString[OutputGrouping.Value](s => Right(OutputGrouping.withName(s)))
+  implicit val converterOutputFormat: ConfigReader[OutputFormat.Value] = fromString[OutputFormat.Value](s => Right(OutputFormat.withName(s)))
+  implicit val converterOneOfRepresentation: ConfigReader[OneOfRepresentation.Value] = fromString[OneOfRepresentation.Value](s => Right(OneOfRepresentation.withName(s)))
 
-  implicit def hint[T] = ProductHint[T](ConfigFieldMapping(CamelCase, CamelCase))
+  implicit def hint[T]: ProductHint[T] = ProductHint[T](ConfigFieldMapping(CamelCase, CamelCase))
 
   object Configuration {
 

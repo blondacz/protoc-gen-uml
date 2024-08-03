@@ -11,10 +11,10 @@ import protocbridge.ProtocBridge
 object PluginMain extends App {
 
   val (versionFlag, protocArgs) =
-    if (args.size >= 1 && args(0).startsWith("-v"))
+    if (args.length >= 1 && args(0).startsWith("-v"))
       (args.head, args.tail)
     else
-      (s"-${ProtocVersion.v3}", args)
+      (s"-v${ProtocVersion.v3}", args)
 
   val code = ProtocBridge.runWithGenerators(a => Protoc.runProtoc(versionFlag +: a.toArray), Seq(ProtocUMLGenerator.name -> ProtocUMLGenerator()), protocArgs)
 

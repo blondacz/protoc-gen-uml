@@ -11,7 +11,7 @@ import protocbridge.ProtocBridge
 object PluginMain extends App {
 
   val (versionFlag, protocArgs) =
-    if (args.length >= 1 && args(0).startsWith("-v"))
+    if (args.size >= 1 && args(0).startsWith("-v"))
       (args.head, args.tail)
     else
       (s"-v${ProtocVersion.v3}", args)

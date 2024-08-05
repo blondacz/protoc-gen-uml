@@ -1,4 +1,4 @@
-package io.coding.me.protoc.uml
+package dev.g4s.protoc.uml
 
 import pureconfig.generic.auto._
 import pureconfig.ConfigReader.fromString

@@ -1,10 +1,10 @@
-package io.coding.me.protoc.uml.formatter
+package dev.g4s.protoc.uml.formatter
 
-import io.coding.me.protoc.uml.model.FieldTypes._
-import io.coding.me.protoc.uml.model.MessageFields._
-import io.coding.me.protoc.uml.model.Multiplicities._
-import io.coding.me.protoc.uml.model._
-import io.coding.me.protoc.uml.{config => c}
+import dev.g4s.protoc.uml.model.FieldTypes._
+import dev.g4s.protoc.uml.model.MessageFields._
+import dev.g4s.protoc.uml.model.Multiplicities._
+import dev.g4s.protoc.uml.model._
+import dev.g4s.protoc.uml.{config => c}
 
 /** Generates a textual description of the Protos in PlantUML format. */
 object PlantUMLFormatter extends UMLFormatter {

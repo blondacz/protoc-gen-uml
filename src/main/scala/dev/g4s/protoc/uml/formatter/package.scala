@@ -1,7 +1,7 @@
-package io.coding.me.protoc.uml
+package dev.g4s.protoc.uml
 
-import io.coding.me.protoc.uml.model._
-import io.coding.me.protoc.uml.{config => c}
+import dev.g4s.protoc.uml.model._
+import dev.g4s.protoc.uml.{config => c}
 
 package object formatter {
 

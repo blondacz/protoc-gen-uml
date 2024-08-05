@@ -1,4 +1,4 @@
-package io.coding.me.protoc.uml
+package dev.g4s.protoc.uml
 
 /** This package contains all types of the simplified protobuf model.
   *

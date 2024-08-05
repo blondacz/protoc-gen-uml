@@ -1,4 +1,4 @@
-package io.coding.me.protoc
+package dev.g4s.protoc
 
 package object uml {
 

@@ -4,6 +4,8 @@
 
 [Protocol buffer compiler plugin](https://developers.google.com/protocol-buffers/docs/reference/other) for UML diagrams.
 
+_Originally developed [here](https://github.com/tssp/protoc-gen-uml). But the last update to master was made 5 years back and counting._
+
 When dealing with protocol buffers in your project, it is often quite difficult to get a proper overview - or better the essence of the data model, especially when you have many types.
 I am not an UML evangelist, but at least for data models it seems to be a very valuable tool (though there may be other valuable areas).
 Loosely based on "a picture is worth more than a thousand words" I strongly believe a generated class diagram for your proto messages and enums (services are not yet supported) allows you

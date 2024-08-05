@@ -1,4 +1,4 @@
-package io.coding.me.protoc.uml.util
+package dev.g4s.protoc.uml.util
 
 /** Simple functionality to convert a name string into different case formats. */
 object NameFormatter {

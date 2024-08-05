@@ -2,7 +2,7 @@ syntax = "proto3";
 
 import "util.proto";
 
-package io.coding.me.schema.music;
+package dev.g4s.schema.music;
 
 message Album {
 

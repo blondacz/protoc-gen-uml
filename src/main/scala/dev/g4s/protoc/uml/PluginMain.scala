@@ -1,4 +1,4 @@
-package io.coding.me.protoc.uml
+package dev.g4s.protoc.uml
 
 import com.github.os72.protocjar.Protoc
 import protocbridge.ProtocBridge

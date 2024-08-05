@@ -1,10 +1,10 @@
-package io.coding.me.protoc.uml.model
+package dev.g4s.protoc.uml.model
 
 import com.google.protobuf.DescriptorProtos._
 import com.google.protobuf.Descriptors.FieldDescriptor.Type
 import com.google.protobuf.Descriptors.{FieldDescriptor, _}
 import com.google.protobuf.compiler.PluginProtos.CodeGeneratorRequest
-import io.coding.me.protoc.uml.util.NameFormatter._
+import dev.g4s.protoc.uml.util.NameFormatter._
 
 import scala.collection.JavaConverters._
 
@@ -26,9 +26,9 @@ object Transformer {
       .map(typ => typ.identifier -> typ)
       .toMap
 
-  import io.coding.me.protoc.uml.model.MessageFields._
-  import io.coding.me.protoc.uml.model.Multiplicities._
-  import io.coding.me.protoc.uml.model.Types._
+  import dev.g4s.protoc.uml.model.MessageFields._
+  import dev.g4s.protoc.uml.model.Multiplicities._
+  import dev.g4s.protoc.uml.model.Types._
 
   /** Transform on file level. */
   private[model] def transformFileDescriptor(fileDescriptor: FileDescriptor, origin: Types.Origin): Set[Types.Type] =

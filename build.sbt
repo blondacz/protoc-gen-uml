@@ -4,7 +4,7 @@ scalaVersion := "2.13.14"
 
 name := "protoc-gen-uml"
 
-organization := "io.coding-me"
+organization := "dev.g4s"
 
 resolvers += Resolver.jcenterRepo
 
@@ -19,4 +19,4 @@ libraryDependencies ++= Seq(
 
 ThisBuild / scalafmtConfig := file(".scalafmt")
 
-Compile / mainClass := Some("io.coding.me.protoc.uml.Main")
+Compile / mainClass := Some("dev.g4s.protoc.uml.Main")

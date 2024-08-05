@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package io.coding.me.schema.util;
+package dev.g4s.schema.util;
 
 message Date {
 

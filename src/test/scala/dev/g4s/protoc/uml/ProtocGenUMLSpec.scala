@@ -1,12 +1,14 @@
-package io.coding.me.protoc.uml.model
+package dev.g4s.protoc.uml
 
 import java.io.File
 import java.nio.file.Files
 import com.github.os72.protocjar.Protoc
-import io.coding.me.protoc.uml._
-import io.coding.me.protoc.uml.config._
-import io.coding.me.protoc.uml.model.FieldTypes._
-import io.coding.me.protoc.uml.model.Multiplicities._
+import dev.g4s.protoc.uml.model.{MessageFields, Name, Package, TYPE_NAME_SEPARATOR, TypeIdentifier, TypeRepository, Types}
+import dev.g4s.protoc.uml._
+import dev.g4s.protoc.uml._
+import dev.g4s.protoc.uml.config.{Config, Configuration}
+import dev.g4s.protoc.uml.model.FieldTypes._
+import dev.g4s.protoc.uml.model.Multiplicities._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.Inside
@@ -19,11 +21,11 @@ abstract class ProtocGenUMLSpec(name: String, folder: String) extends AnyFlatSpe
   private var testFiles: Array[String] = Array()
 
   protected def config: Config          = Configuration()
-  protected lazy val protocUMLGenerator = ProtocUMLGenerator()
-  protected lazy val typeRepository     = protocUMLGenerator.typeRepository
-  protected lazy val fileContent        = protocUMLGenerator.fileContent
+  protected lazy val protocUMLGenerator: ProtocUMLGenerator = ProtocUMLGenerator()
+  protected lazy val typeRepository: TypeRepository = protocUMLGenerator.typeRepository
+  protected lazy val fileContent: Map[String, String] = protocUMLGenerator.fileContent
 
-  tmpFile.deleteOnExit
+  tmpFile.deleteOnExit()
 
   s"The $name PB model transformer " should "load proper proto files" in {
 
@@ -100,7 +102,7 @@ class SimpleProtocGenUMLSpec extends ProtocGenUMLSpec("simple", "p1") {
 
 class OneOfProtocGenUMLSpec extends ProtocGenUMLSpec("oneOf", "p2") {
 
-  lazy val pakkage = Package("test.package")
+  lazy val pakkage: Package = Package("test.package")
 
   it should "have a simple message type with oneOf field" in {
 
@@ -188,9 +190,9 @@ class ComplexProtocGenUMLSpec extends ProtocGenUMLSpec("complex", "complex") {
 
   it should "have all expected types" in {
 
-    val musicPackage    = Package("io.coding.me.schema.music")
-    val utilPackage     = Package("io.coding.me.schema.util")
-    val databasePackage = Package("io.coding.me.schema.database")
+    val musicPackage    = Package("dev.g4s.schema.music")
+    val utilPackage     = Package("dev.g4s.schema.util")
+    val databasePackage = Package("dev.g4s.schema.database")
 
     typeRepository.keys.map(_.pakkage) should contain(musicPackage)
     typeRepository.keys.map(_.pakkage) should contain(utilPackage)

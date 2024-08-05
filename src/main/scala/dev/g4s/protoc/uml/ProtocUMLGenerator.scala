@@ -1,9 +1,9 @@
-package io.coding.me.protoc.uml
+package dev.g4s.protoc.uml
 
 import com.google.protobuf.compiler.PluginProtos.{CodeGeneratorRequest, CodeGeneratorResponse}
-import io.coding.me.protoc.uml.config._
-import io.coding.me.protoc.uml.formatter._
-import io.coding.me.protoc.uml.model._
+import dev.g4s.protoc.uml.config._
+import dev.g4s.protoc.uml.formatter._
+import dev.g4s.protoc.uml.model._
 import protocbridge.ProtocCodeGenerator
 
 import scala.collection.JavaConverters._

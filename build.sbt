@@ -20,3 +20,41 @@ libraryDependencies ++= Seq(
 ThisBuild / scalafmtConfig := file(".scalafmt")
 
 Compile / mainClass := Some("dev.g4s.protoc.uml.Main")
+
+Global / onChangedBuildSource := ReloadOnSourceChanges
+
+ThisBuild / organization := "dev.g4s"
+ThisBuild / organizationName := "dev.g4s"
+ThisBuild / organizationHomepage := Some(url("https://github.com/blondacz/protoc-gen-uml"))
+
+ThisBuild / scmInfo := Some(
+  ScmInfo(
+    url("https://github.com/blondacz/protoc-gen-uml"),
+    "scm:git@github.com/blondacz/protoc-gen-uml"
+  )
+)
+ThisBuild / developers := List(
+  Developer(
+    id = "blondacz",
+    name = "Tomas Klubal",
+    email = "tomas.klubal@gmail.com",
+    url = url("https://github.com/blondacz")
+  )
+)
+
+ThisBuild / description := "Plugin into `protoc` generating PlantUML diagrams from the messages defined in the proto files"
+ThisBuild / licenses := List(
+  "MIT License" -> new URL("https://github.com/blondacz/protoc-gen-uml/blob/master/LICENSE")
+)
+ThisBuild / homepage := Some(url("https://github.com/blondacz/protoc-gen-uml"))
+
+// Remove all additional repository other than Maven Central from POM
+ThisBuild / pomIncludeRepository := { _ => false }
+ThisBuild / publishTo := {
+  // For accounts created after Feb 2021:
+  // val nexus = "https://s01.oss.sonatype.org/"
+  val nexus = "https://oss.sonatype.org/"
+  if (isSnapshot.value) Some("snapshots" at nexus + "content/repositories/snapshots")
+  else Some("releases" at nexus + "service/local/staging/deploy/maven2")
+}
+ThisBuild / publishMavenStyle := true

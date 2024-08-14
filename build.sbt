@@ -8,7 +8,7 @@ Test / parallelExecution := false
 name := "protoc-gen-uml"
 
 organization := "dev.g4s"
-version := "1.0.0"
+version := "1.1.0"
 
 resolvers += Resolver.jcenterRepo
 

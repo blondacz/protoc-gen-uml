@@ -3,6 +3,7 @@ import sbt.Tags.Publish
 enablePlugins(JavaAppPackaging)
 
 scalaVersion := "2.13.14"
+Test / parallelExecution := false
 
 name := "protoc-gen-uml"
 
@@ -17,7 +18,7 @@ ThisBuild / sonatypeCredentialHost := sonatype01
 
 libraryDependencies ++= Seq(
   "com.thesamet.scalapb"  %% "compilerplugin"           % "0.11.17",
-  "com.github.pureconfig" %% "pureconfig"               % "0.17.7" excludeAll (ExclusionRule(organization = "com.typesafe", name = "config")),
+  "com.github.pureconfig" %% "pureconfig"               % "0.17.7" excludeAll ExclusionRule(organization = "com.typesafe", name = "config"),
   "com.github.os72"       % "protoc-jar"                % "3.11.4",
   "com.typesafe"          % "config"                    % "1.4.3",
   "org.scalatest"         %% "scalatest-flatspec"       % "3.2.19" % "test",
@@ -52,7 +53,7 @@ isSnapshot := false
 
 ThisBuild / description := "Plugin into `protoc` generating PlantUML diagrams from the messages defined in the proto files"
 ThisBuild / licenses := List(
-  "MIT License" -> new URL("https://github.com/blondacz/protoc-gen-uml/blob/master/LICENSE")
+  "MIT License" -> url("https://github.com/blondacz/protoc-gen-uml/blob/master/LICENSE")
 )
 ThisBuild / homepage := Some(url("https://github.com/blondacz/protoc-gen-uml"))
 

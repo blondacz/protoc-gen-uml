@@ -5,13 +5,14 @@ import dev.g4s.protoc.uml.config._
 import dev.g4s.protoc.uml.formatter._
 import dev.g4s.protoc.uml.model._
 import protocbridge.ProtocCodeGenerator
+import pureconfig.error.ConfigReaderFailures
 
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 class ProtocUMLGenerator(config: Config) extends ProtocCodeGenerator {
 
-  var typeRepository: TypeRepository   = null
-  var fileContent: Map[String, String] = null
+  var typeRepository: TypeRepository   = _
+  var fileContent: Map[String, String] = _
 
   override def run(request: Array[Byte]): Array[Byte] = {
 
@@ -57,5 +58,8 @@ object ProtocUMLGenerator {
 
   val name: String = "uml"
 
-  def apply(config: Config = Configuration()): ProtocUMLGenerator = new ProtocUMLGenerator(config)
+  def apply(config: Option[Config] = None): Either[ConfigReaderFailures, ProtocUMLGenerator] = {
+    config.fold(Configuration())(c => Right(c)).map(c => new ProtocUMLGenerator(c))
+  }
+
 }

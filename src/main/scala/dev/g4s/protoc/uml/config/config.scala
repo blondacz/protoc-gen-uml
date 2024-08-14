@@ -2,6 +2,7 @@ package dev.g4s.protoc.uml
 
 import pureconfig.generic.auto._
 import pureconfig.ConfigReader.fromString
+import pureconfig.error.ConfigReaderFailures
 import pureconfig.generic.ProductHint
 import pureconfig.{CamelCase, ConfigFieldMapping, ConfigReader}
 
@@ -63,6 +64,8 @@ package object config {
 
   object Configuration {
 
-    def apply(): Config = pureconfig.loadConfig[Config]("protoc-gen-uml").right.get
+    def apply(): Either[ConfigReaderFailures,Config] = {
+      pureconfig.ConfigSource.default.at("protoc-gen-uml").load[Config]
+    }
   }
 }

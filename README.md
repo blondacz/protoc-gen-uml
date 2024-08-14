@@ -92,7 +92,7 @@ Since the actual type of the content of the field is only known at runtime, it c
 The plugin comes with a plenty of configuration options, controlling the output behavior. There is not yet a proper idea of integrating it into the protoc CLI.
 Using the default protoc meachanism seems to be too verbose.
 
-The configuration switches can be found in the [application.conf](src/main/resources/application.conf).
+The configuration switches can be found in the [application.conf](src/main/resources/reference.conf).
 
 ## Plans and Roadmap
 

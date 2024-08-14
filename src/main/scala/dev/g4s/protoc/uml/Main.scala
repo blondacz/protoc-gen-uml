@@ -1,14 +1,15 @@
 package dev.g4s.protoc.uml
 
 import protocbridge.frontend.PluginFrontend
+import pureconfig.error.ConfigReaderFailures
 
 /** Main entry point when using compiler as protoc plugin */
 object Main extends App {
 
-  val plugin = ProtocUMLGenerator()
-
-  val response = PluginFrontend.runWithBytes(plugin, System.in.readAllBytes())
-
-  System.out.write(response)
-
+  ProtocUMLGenerator().map {
+    gen => PluginFrontend.runWithBytes(gen, System.in.readAllBytes())
+  }.fold (f => {
+    f.prettyPrint()
+    sys.exit(-1)
+  },System.out.write)
 }

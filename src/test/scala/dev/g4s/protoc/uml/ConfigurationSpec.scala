@@ -2,7 +2,7 @@ package dev.g4s.protoc.uml
 
 import com.typesafe.config.{ConfigException, ConfigFactory}
 import dev.g4s.protoc.uml.config.{Config, Configuration, Output, OutputFileOrganization}
-import org.scalatest.Inside
+import org.scalatest.{BeforeAndAfterEach, Inside}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import pureconfig.error.{CannotReadFile, ConfigReaderFailures, ThrowableFailure}
@@ -32,6 +32,25 @@ class ConfigurationSpec extends AnyFlatSpec with Matchers with Inside {
   }
 }
 
+
+trait ConfigOverride extends BeforeAndAfterEach {
+  self: AnyFlatSpec =>
+
+  def configLocation: String
+  override def beforeEach(): Unit = {
+    sys.props.exclusively {
+      ConfigFactory.invalidateCaches()
+      sys.props.update("config.resource", configLocation)
+    }
+  }
+
+  override def afterEach(): Unit = {
+    sys.props.exclusively {
+      sys.props.remove("config.resource")
+    }
+  }
+}
+
 abstract class ConfigTesting(path: String) {
   def loadedConfig: Either[ConfigReaderFailures, Config] = {
     sys.props.exclusively {
@@ -45,3 +64,4 @@ abstract class ConfigTesting(path: String) {
     }
   }
 }
+

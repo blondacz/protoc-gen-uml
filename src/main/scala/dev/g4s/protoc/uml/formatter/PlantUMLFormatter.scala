@@ -9,7 +9,7 @@ import dev.g4s.protoc.uml.{config => c}
 /** Generates a textual description of the Protos in PlantUML format. */
 object PlantUMLFormatter extends UMLFormatter {
 
-  override def apply(types: Iterable[Types.Type], typeRepository: TypeRepository, config: c.Config) = {
+  override def apply(types: Iterable[Types.Type], typeRepository: TypeRepository, config: c.Config): String = {
 
     def formatIterable[T <: String](initial: StructuredStringFormatter, iterable: Iterable[T]) =
       iterable.foldLeft(initial)((formatter, element) => formatter.add(element))
@@ -89,12 +89,13 @@ object PlantUMLFormatter extends UMLFormatter {
     StructuredStringFormatter
       .add("@startuml")
       .add(config.uml.formatter.plantUML.fileHeader)
-      .withCondition(config.uml.view.relations) {
+      .withCondition(config.uml.view.relations ) {
         _.add {
 
           types.map { typ =>
             val fromName  = typ.identifier.toString
-            val relations = typ.referencedTypeIdentifiers.map(_.toString).map(toName => s"$fromName -- $toName")
+
+            val relations: Set[String] = typ.referencedTypeIdentifiers.filter(r => !config.output.filter.packages.contains(r.pakkage.p)).map(_.toString).map(toName => s"$fromName -- $toName")
 
             formatIterable(StructuredStringFormatter.newline, relations)
           }

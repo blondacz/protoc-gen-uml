@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+import "thirdparty.proto";
+
+package test.package;
+
+message AMessage {
+  string field1 = 1;
+  int32 field2 = 2;
+  thirdparty.package.ThirdPartyType structField = 3;
+}
+
+message BMessage {
+  AMessage aMessage = 1;
+}
+

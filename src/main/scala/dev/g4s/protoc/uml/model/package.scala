@@ -69,7 +69,7 @@ package object model {
 
     /** Represents a PB one-of field.
       *
-      * When parsing an one-of field, it becomes a new [[Types.OneOfType]] containing all the fields that are
+      * When parsing a one-of field, it becomes a new [[Types.OneOfType]] containing all the fields that are
       * part of the one-of group. The idea behind is to generate a new UML stereotype for one-of fields to
       * properly reflect them in a diagram.
       */

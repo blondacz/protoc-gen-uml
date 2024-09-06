@@ -12,6 +12,7 @@ class ComplexProtocGenUMLSpec extends ProtocGenUMLSpec("complex", "complex") {
 
     typeRepository.keys.map(_.pakkage) should contain(musicPackage)
     typeRepository.keys.map(_.pakkage) should contain(utilPackage)
+    typeRepository.keys.map(_.pakkage) should contain(databasePackage)
 
     List("Date").map(Name).map(n => TypeIdentifier(utilPackage, n)).foreach { typeIdentifier =>
       typeRepository.keys should contain(typeIdentifier)
@@ -23,6 +24,5 @@ class ComplexProtocGenUMLSpec extends ProtocGenUMLSpec("complex", "complex") {
       .foreach { typeIdentifier =>
         typeRepository.keys should contain(typeIdentifier)
       }
-
   }
 }

@@ -16,7 +16,7 @@ The basic idea of protoc-gen-uml is to plugin into `protoc` and generate a new r
 Of course one could generate - let's say - Java classes with protoc and then again generate a class diagram out of the generated classes.
 But at least for me it never felt like having a good reflection of the proto model.
 
-Currently the compiler plugin only supports [PlantUML](http://plantuml.com/) format. Other output formats are planned (e.g. [UMLGraph](http://www.umlgraph.org/) or [DOT](http://graphviz.org/)).
+Currently, the compiler plugin only supports [PlantUML](http://plantuml.com/) format. Other output formats are planned (e.g. [UMLGraph](http://www.umlgraph.org/) or [DOT](http://graphviz.org/)).
 
 ![Complete Model Example](doc/complete_model.png)
 
@@ -48,7 +48,7 @@ plantuml /tmp/complete_model.puml
 
 ## Versions
 
-The plugin is developed and tested with PB version 3 and requires Scala 2.11 and Java 8. Currently it is not in a state which is releasable - exhaustive tests of more protos are required.
+The plugin is developed and tested with PB version 3 and requires Scala 2.13 and Java 8. Currently, it is not in a state which is releasable - exhaustive tests of more protos are required.
 
 ## Type Transformation
 

@@ -2,6 +2,7 @@ package dev.g4s.protoc.uml
 
 import com.github.os72.protocjar.Protoc
 import com.typesafe.config.ConfigFactory
+import dev.g4s.protoc.uml.PluginMain.protocArgs
 import dev.g4s.protoc.uml.config.{Config, Configuration}
 import dev.g4s.protoc.uml.model.TypeRepository
 import org.scalatest.Inside
@@ -48,15 +49,16 @@ abstract class ProtocGenUMLSpec(name: String, folder: String) extends AnyFlatSpe
   it should "compile the protos at all" in {
 
     val protocArgs = Array(s"--uml_out=$tmpFile", "-I", testDir) ++ testFiles
+    val versionFlag = s"-v${ProtocVersion.v3}"
+    val protocRunner : ProtocRunner[Int] = ProtocRunner.fromFunction((args, extraEnv) =>
+      Protoc.runProtoc(versionFlag +: args.toArray))
 
-    val code = ProtocBridge
-      .runWithGenerators(a => Protoc.runProtoc(s"-v${ProtocVersion.v3}" +: a.toArray), Seq(ProtocUMLGenerator.name -> protocUMLGenerator), protocArgs)
+    val code = ProtocBridge.runWithGenerators(protocRunner,Seq(ProtocUMLGenerator.name -> protocUMLGenerator),protocArgs)
 
     code should be(0)
   }
 
   it should "have a non empty type repository" in {
-
     protocUMLGenerator.typeRepository should not be empty
   }
 }

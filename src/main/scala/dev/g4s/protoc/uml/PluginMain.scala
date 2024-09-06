@@ -1,7 +1,7 @@
 package dev.g4s.protoc.uml
 
 import com.github.os72.protocjar.Protoc
-import protocbridge.ProtocBridge
+import protocbridge.{ProtocBridge, ProtocRunner}
 
 /**
   * Main entry point when using compiler as sbt plugin.
@@ -17,7 +17,9 @@ object PluginMain extends App {
       (s"-v${ProtocVersion.v3}", args)
 
   ProtocUMLGenerator().map { g =>
-    ProtocBridge.runWithGenerators[Int]((a : Seq[String]) => Protoc.runProtoc(versionFlag +: a.toArray), Seq(ProtocUMLGenerator.name -> g), protocArgs)
+    val protocRunner : ProtocRunner[Int] = ProtocRunner.fromFunction((args,extraEnv) =>
+      Protoc.runProtoc(versionFlag +: args.toArray))
+    ProtocBridge.runWithGenerators(protocRunner,Seq(ProtocUMLGenerator.name -> g),protocArgs)
   }.fold (f => {
     f.prettyPrint()
     sys.exit(-1)

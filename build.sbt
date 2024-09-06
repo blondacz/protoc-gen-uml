@@ -8,7 +8,6 @@ Test / parallelExecution := false
 name := "protoc-gen-uml"
 
 organization := "dev.g4s"
-version := "1.1.0"
 
 resolvers += Resolver.jcenterRepo
 
@@ -59,10 +58,9 @@ ThisBuild / homepage := Some(url("https://github.com/blondacz/protoc-gen-uml"))
 
 // Remove all additional repository other than Maven Central from POM
 ThisBuild / pomIncludeRepository := { _ => false }
-ThisBuild / version := "v1.0.0"
+ThisBuild / version := "1.2.0"
 
 ThisBuild / publishTo := {
-  // For accounts created after Feb 2021:
   val nexus = "https://s01.oss.sonatype.org/"
   if (isSnapshot.value) Some("snapshots" at nexus + "content/repositories/snapshots")
   else Some("releases" at nexus + "service/local/staging/deploy/maven2")

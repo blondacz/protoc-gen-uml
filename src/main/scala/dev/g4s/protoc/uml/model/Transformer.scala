@@ -6,7 +6,7 @@ import com.google.protobuf.Descriptors.{FieldDescriptor, _}
 import com.google.protobuf.compiler.PluginProtos.CodeGeneratorRequest
 import dev.g4s.protoc.uml.util.NameFormatter._
 
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 /** Takes a PB model in form of a CodeGeneratorRequest and transforms it into a simplified model.   */
 object Transformer {

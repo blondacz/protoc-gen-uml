@@ -1,11 +1,11 @@
 package dev.g4s.protoc.uml
 
-import java.util.concurrent.{ArrayBlockingQueue, BlockingQueue, LinkedBlockingQueue}
+import java.util.concurrent.{ArrayBlockingQueue, BlockingQueue}
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
 
 abstract class QueueConsumer[A](name: String, limit: Int, stopTimeout: FiniteDuration) {
-  private val queue: BlockingQueue[A] = new  ArrayBlockingQueue[A](limit)
-  private var consumerThread: Thread = _
+  private val queue: BlockingQueue[A] = new ArrayBlockingQueue[A](limit)
+  @volatile private var consumerThread: Thread = _
 
   // Starts the consumer thread
   def start(): Unit = {
@@ -15,11 +15,16 @@ abstract class QueueConsumer[A](name: String, limit: Int, stopTimeout: FiniteDur
         try {
           while (true) {
             val item = queue.take() // Blocks until an item is available or thread is interrupted
-            runOne(item)
+            try {
+              runOne(item)
+            } catch {
+              case e: Exception =>
+                // Handle or log the exception
+//                e.printStackTrace()
+            }
           }
         } catch {
           case _: InterruptedException =>
-            Thread.sleep(1000)
           // Thread was interrupted; exit gracefully
         }
       })
@@ -29,7 +34,7 @@ abstract class QueueConsumer[A](name: String, limit: Int, stopTimeout: FiniteDur
     }
   }
 
-  def runOne(item: A) : Unit
+  def runOne(item: A): Unit
 
   // Stops the consumer thread with a timeout
   def stop(): Unit = {
@@ -44,6 +49,7 @@ abstract class QueueConsumer[A](name: String, limit: Int, stopTimeout: FiniteDur
         println(s"Consumer $name stopped successfully.")
       }
     }
+    // Process remaining items in the queue
   }
 
   // Adds an item to the queue
@@ -52,10 +58,9 @@ abstract class QueueConsumer[A](name: String, limit: Int, stopTimeout: FiniteDur
   }
 }
 
-
-object QueueConsumerTest {
+object QueueConsumerApp {
   def main(args: Array[String]): Unit = {
-    val consumer = new QueueConsumer[String]("RL1",2,1.millis) {
+    val consumer = new QueueConsumer[String]("RL1", 2, 1000.millis) {
       override def runOne(item: String): Unit = println(item)
     }
 
@@ -63,20 +68,18 @@ object QueueConsumerTest {
     consumer.start()
 
     // Simulate a producer adding items
-    new Thread(new Runnable {
-      override def run(): Unit = {
-        val items = Array("Hello", "World", "This", "Is", "Scala")
-        for (item <- items) {
-          Thread.sleep(500)  // Simulate delay
-          consumer.enqueue(item)
-        }
+    new Thread(() => {
+      val items = Array("Hello", "World", "This", "Is", "Scala")
+      for (item <- items) {
+        Thread.sleep(500) // Simulate delay
+        consumer.enqueue(item)
       }
     }).start()
 
     // Let the consumer run for a while
     Thread.sleep(3000)
 
-    // Stop the consumer thread with a timeout of 1000 milliseconds
+    // Stop the consumer thread
     consumer.stop()
   }
 }

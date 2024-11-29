@@ -8,16 +8,26 @@ tasks.register("printTransitiveDependencies") {
         }
 
         def (group, name) = libraryIdentifier.split(":")
+        def maxDepth = (project.findProperty("depth") ?: "1").toInteger()
 
-        println "Finding transitive dependencies for $group:$name"
+        println "Finding transitive dependencies for $group:$name up to $maxDepth levels"
+
         configurations.compileClasspath.resolvedConfiguration.firstLevelModuleDependencies.each { dep ->
             if (dep.moduleGroup == group && dep.moduleName == name) {
                 println "Direct dependency: ${dep.moduleGroup}:${dep.moduleName}:${dep.moduleVersion}"
-                dep.children.each { transitive ->
-                    println "  Transitive: ${transitive.moduleGroup}:${transitive.moduleName}:${transitive.moduleVersion}"
-                }
+                printTransitive(dep, 1, maxDepth)
                 return
             }
         }
+    }
+}
+
+// Recursive function to print transitive dependencies
+def printTransitive(dep, currentLevel, maxDepth) {
+    if (currentLevel > maxDepth) return
+
+    dep.children.each { transitive ->
+        println "  ${"  " * (currentLevel - 1)}Transitive (Level $currentLevel): ${transitive.moduleGroup}:${transitive.moduleName}:${transitive.moduleVersion}"
+        printTransitive(transitive, currentLevel + 1, maxDepth)
     }
 }

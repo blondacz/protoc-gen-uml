@@ -1,23 +1,20 @@
-tasks.register("printTransitiveDependencies") {
+tasks.register("resolveLibraryDependencies") {
     doLast {
         // Get the library identifier (group:name) from the command line
         def libraryIdentifier = project.findProperty("library") ?: ""
         if (!libraryIdentifier.contains(":")) {
-            println "Please provide the library in 'group:name' format using -Plibrary=<group:name>"
+            println "Please provide the library in 'group:name[:version]' format using -Plibrary=<group:name[:version]>"
             return
         }
 
-        def (group, name) = libraryIdentifier.split(":")
         def maxDepth = (project.findProperty("depth") ?: "1").toInteger()
+        println "Resolving dependencies for $libraryIdentifier up to $maxDepth levels"
 
-        println "Finding transitive dependencies for $group:$name up to $maxDepth levels"
-
-        configurations.compileClasspath.resolvedConfiguration.firstLevelModuleDependencies.each { dep ->
-            if (dep.moduleGroup == group && dep.moduleName == name) {
-                println "${dep.moduleGroup}:${dep.moduleName}:${dep.moduleVersion}"
-                printTransitive(dep, 1, maxDepth, "")
-                return
-            }
+        // Add the library as a detached configuration and resolve its dependencies
+        def configuration = configurations.detachedConfiguration(dependencies.create(libraryIdentifier))
+        configuration.resolvedConfiguration.firstLevelModuleDependencies.each { dep ->
+            println "${dep.moduleGroup}:${dep.moduleName}:${dep.moduleVersion}"
+            printTransitive(dep, 1, maxDepth, "")
         }
     }
 }

@@ -1,6 +1,6 @@
 tasks.register("printTransitiveDependencies") {
     doLast {
-        // Get the library identifier (group:name) from command line
+        // Get the library identifier (group:name) from the command line
         def libraryIdentifier = project.findProperty("library") ?: ""
         if (!libraryIdentifier.contains(":")) {
             println "Please provide the library in 'group:name' format using -Plibrary=<group:name>"
@@ -14,20 +14,26 @@ tasks.register("printTransitiveDependencies") {
 
         configurations.compileClasspath.resolvedConfiguration.firstLevelModuleDependencies.each { dep ->
             if (dep.moduleGroup == group && dep.moduleName == name) {
-                println "Direct dependency: ${dep.moduleGroup}:${dep.moduleName}:${dep.moduleVersion}"
-                printTransitive(dep, 1, maxDepth)
+                println "${dep.moduleGroup}:${dep.moduleName}:${dep.moduleVersion}"
+                printTransitive(dep, 1, maxDepth, "")
                 return
             }
         }
     }
 }
 
-// Recursive function to print transitive dependencies
-def printTransitive(dep, currentLevel, maxDepth) {
+// Recursive function to print transitive dependencies in ASCII-art tree format
+def printTransitive(dep, currentLevel, maxDepth, prefix) {
     if (currentLevel > maxDepth) return
 
-    dep.children.each { transitive ->
-        println "  ${"  " * (currentLevel - 1)}Transitive (Level $currentLevel): ${transitive.moduleGroup}:${transitive.moduleName}:${transitive.moduleVersion}"
-        printTransitive(transitive, currentLevel + 1, maxDepth)
+    def childCount = dep.children.size()
+    dep.children.eachWithIndex { transitive, index ->
+        def isLastChild = index == childCount - 1
+        def connector = isLastChild ? "\\---" : "+---"
+        println "$prefix$connector ${transitive.moduleGroup}:${transitive.moduleName}:${transitive.moduleVersion}"
+
+        // Prepare the prefix for the next level
+        def newPrefix = prefix + (isLastChild ? "    " : "|   ")
+        printTransitive(transitive, currentLevel + 1, maxDepth, newPrefix)
     }
 }
